@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lifestyle & Personal — Marker Media</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #f5ede0;
+    --warm: #e8d5be;
+    --brown: #3d2b1f;
+    --dark: #1a1008;
+    --accent: #c17f3e;
+    --accent-light: rgba(193,127,62,0.12);
+    --border: rgba(61,43,31,0.1);
+    --text-muted: rgba(61,43,31,0.5);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width 0.3s, height 0.3s; }
+  .cursor-ring { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(193,127,62,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.12s ease; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 56px;
+    background: linear-gradient(to bottom, rgba(245,237,224,0.98) 0%, transparent 100%);
+  }
+  .nav-back {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    cursor: none;
+    transition: color 0.3s;
+  }
+  .nav-back:hover { color: var(--accent); }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--brown);
+    text-decoration: none;
+    cursor: none;
+  }
+  .nav-cta {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 12px 24px;
+    border: 1px solid rgba(193,127,62,0.4);
+    cursor: none;
+    transition: background 0.3s, color 0.3s;
+  }
+  .nav-cta:hover { background: var(--accent); color: var(--cream); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+  .hero-left {
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-img-main {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: transform 8s ease, opacity 0.6s ease;
+    transform: scale(1.04);
+  }
+  .hero-left:hover .hero-img-main { transform: scale(1); opacity: 1; }
+  .hero-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,16,8,0.6) 0%, transparent 60%);
+  }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 160px 64px 80px;
+    background: var(--cream);
+    position: relative;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    top: 80px;
+    right: 56px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+
+  .hero-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: slideIn 0.8s ease 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 0.95;
+    color: var(--brown);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: slideIn 0.8s ease 0.5s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--accent); }
+  .hero-desc {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: var(--text-muted);
+    max-width: 380px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: slideIn 0.8s ease 0.7s forwards;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: slideIn 0.8s ease 0.9s forwards;
+  }
+  .btn-fill {
+    display: inline-block;
+    padding: 16px 36px;
+    background: var(--accent);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+    transition: opacity 0.3s;
+  }
+  .btn-fill:hover { opacity: 0.85; }
+  .btn-outline {
+    display: inline-block;
+    padding: 16px 36px;
+    border: 1px solid rgba(61,43,31,0.2);
+    color: var(--brown);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Small grid on hero left bottom */
+  .hero-stats {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    z-index: 2;
+    display: flex;
+    gap: 32px;
+    opacity: 0;
+    animation: slideIn 0.8s ease 1.1s forwards;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(245,237,224,0.5);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--brown);
+    padding: 16px 0;
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 48px;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(245,237,224,0.35);
+    flex-shrink: 0;
+  }
+  .marquee-dot { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SERVICES */
+  .section { padding: 100px 56px; }
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  .services-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+  .svc-item {
+    padding: 52px 48px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .svc-item:nth-child(even) { border-right: none; }
+  .svc-item:nth-last-child(1),
+  .svc-item:nth-last-child(2) { border-bottom: none; }
+  .svc-item:hover { background: var(--accent-light); }
+
+  .svc-icon {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    display: block;
+    filter: grayscale(0);
+  }
+  .svc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--brown);
+    margin-bottom: 14px;
+    line-height: 1.1;
+  }
+  .svc-title em { font-style: italic; color: var(--accent); }
+  .svc-desc {
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+  .svc-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  /* GALLERY MOSAIC */
+  .gallery-section { padding: 40px 56px 100px; }
+  .gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+  }
+  .gallery-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    color: var(--brown);
+    line-height: 1;
+  }
+  .gallery-title em { font-style: italic; color: var(--accent); }
+  .view-all-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    cursor: none;
+    border-bottom: 1px solid rgba(193,127,62,0.3);
+    padding-bottom: 4px;
+    transition: border-color 0.3s;
+  }
+  .view-all-link:hover { border-color: var(--accent); }
+
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 300px 220px 300px;
+    gap: 6px;
+  }
+  .mosaic-item {
+    overflow: hidden;
+    position: relative;
+    cursor: none;
+    background: var(--warm);
+  }
+  .mosaic-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  .mosaic-item:nth-child(2) { grid-column: 3; grid-row: 1; }
+  .mosaic-item:nth-child(3) { grid-column: 4; grid-row: 1 / 3; }
+  .mosaic-item:nth-child(4) { grid-column: 1; grid-row: 2 / 4; }
+  .mosaic-item:nth-child(5) { grid-column: 2; grid-row: 2; }
+  .mosaic-item:nth-child(6) { grid-column: 3; grid-row: 2; }
+  .mosaic-item:nth-child(7) { grid-column: 2 / 4; grid-row: 3; }
+  .mosaic-item:nth-child(8) { grid-column: 4; grid-row: 3; }
+
+  .mosaic-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .mosaic-item:hover .mosaic-img { transform: scale(1.06); }
+  .mosaic-label {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    background: rgba(245,237,224,0.9);
+    color: var(--brown);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: all 0.3s ease;
+  }
+  .mosaic-item:hover .mosaic-label { opacity: 1; transform: translateY(0); }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 80px 56px;
+    background: var(--brown);
+  }
+  .test-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(245,237,224,0.35);
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .test-label::after {
+    content: '';
+    width: 60px;
+    height: 1px;
+    background: rgba(245,237,224,0.2);
+  }
+  .test-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .test-card {
+    padding: 40px 36px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(245,237,224,0.06);
+  }
+  .test-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+  }
+  .star { color: var(--accent); font-size: 0.75rem; }
+  .test-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(245,237,224,0.75);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .test-name {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .test-context {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,237,224,0.3);
+    margin-top: 4px;
+  }
+
+  /* PRICING GUIDE */
+  .pricing-section {
+    padding: 100px 56px;
+    background: var(--warm);
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 56px;
+  }
+  .pricing-card {
+    padding: 48px 36px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .pricing-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px rgba(61,43,31,0.1);
+  }
+  .pricing-card.featured {
+    background: var(--brown);
+    border-color: transparent;
+  }
+  .price-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: block;
+  }
+  .price-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 300;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+  .pricing-card.featured .price-name { color: var(--cream); }
+  .price-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pricing-card.featured .price-desc { color: rgba(245,237,224,0.5); border-color: rgba(245,237,224,0.1); }
+  .price-includes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  .price-includes li {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .pricing-card.featured .price-includes li { color: rgba(245,237,224,0.55); }
+  .price-includes li::before {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .book-btn {
+    display: block;
+    text-align: center;
+    padding: 14px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+    transition: all 0.3s;
+  }
+  .book-btn-outline {
+    border: 1px solid rgba(61,43,31,0.2);
+    color: var(--brown);
+  }
+  .book-btn-outline:hover { background: var(--accent); color: var(--cream); border-color: var(--accent); }
+  .book-btn-filled {
+    background: var(--accent);
+    color: var(--cream);
+  }
+  .book-btn-filled:hover { opacity: 0.85; }
+  .featured-badge {
+    position: absolute;
+    top: -1px;
+    right: 24px;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    background: var(--accent);
+    color: var(--cream);
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 120px 56px;
+    background: var(--cream);
+    text-align: center;
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .cta-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 300;
+    color: var(--brown);
+    line-height: 1.05;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .cta-title em { font-style: italic; color: var(--accent); }
+  .cta-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 48px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.8;
+    position: relative;
+  }
+  .cta-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    position: relative;
+  }
+
+  footer {
+    padding: 48px 56px;
+    background: var(--dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(245,237,224,0.35);
+  }
+  .footer-info {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,237,224,0.2);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { height: 60vh; }
+    .hero-right { padding: 60px 32px 60px; }
+    nav { padding: 24px 32px; }
+    .section, .gallery-section { padding: 80px 32px; }
+    .services-split { grid-template-columns: 1fr; }
+    .svc-item:nth-child(even) { border-right: none; }
+    .mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .mosaic-item { grid-column: auto !important; grid-row: auto !important; height: 240px; }
+    .test-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .pricing-section { padding: 80px 32px; }
+    .testimonials { padding: 60px 32px; }
+    .cta-section { padding: 80px 32px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; padding: 40px 32px; }
+    .footer-info { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-back">← All Paths</a>
+  <a href="index.html" class="nav-logo">Marker Media</a>
+  <a href="https://tpmarkermedia.com/booking/" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <img class="hero-img-main" src="https://tpmarkermedia.com/wp-content/uploads/2025/10/IMG_9466-scaled.webp" alt="Lifestyle photography">
+    <div class="hero-img-overlay"></div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">5.0</span>
+        <span class="stat-label">Google Rating</span>
+      </div>
+      <div style="width:1px;background:rgba(245,237,224,0.15);height:40px;align-self:center;"></div>
+      <div>
+        <span class="stat-num">100+</span>
+        <span class="stat-label">Shoots Done</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-tag">Lifestyle & Personal</div>
+    <h1 class="hero-title">Your moments,<br><em>made</em><br>permanent.</h1>
+    <p class="hero-desc">Graduation shoots, portrait sessions, birthday celebrations, and personal milestones. Photography that captures exactly what you were feeling, not just what you were wearing.</p>
+    <div class="hero-btns">
+      <a href="https://tpmarkermedia.com/booking/" class="btn-fill">Book Your Shoot</a>
+      <a href="#gallery" class="btn-outline">See the Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Graduation Shoots <div class="marquee-dot"></div> Portraits <div class="marquee-dot"></div> Birthday Sessions <div class="marquee-dot"></div> Prom Photography <div class="marquee-dot"></div> Smoke Bomb Shoots <div class="marquee-dot"></div> Group Photography <div class="marquee-dot"></div> Women's Day Sessions <div class="marquee-dot"></div> Sunset Portraits <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Graduation Shoots <div class="marquee-dot"></div> Portraits <div class="marquee-dot"></div> Birthday Sessions <div class="marquee-dot"></div> Prom Photography <div class="marquee-dot"></div> Smoke Bomb Shoots <div class="marquee-dot"></div> Group Photography <div class="marquee-dot"></div> Women's Day Sessions <div class="marquee-dot"></div> Sunset Portraits <div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section">
+  <div class="section-label">What We Shoot</div>
+  <div class="services-split">
+    <div class="svc-item">
+      <span class="svc-icon">🎓</span>
+      <h3 class="svc-title">Graduation<br><em>Shoots</em></h3>
+      <p class="svc-desc">You worked for this. The shoot should match. Full outdoor sessions with creative direction, smoke bombs available, and a quick turnaround so you can share before the excitement fades.</p>
+      <div class="svc-tags">
+        <span class="tag">Outdoor</span>
+        <span class="tag">Smoke Bombs</span>
+        <span class="tag">Solo or Group</span>
+        <span class="tag">Same Week Delivery</span>
+      </div>
+    </div>
+    <div class="svc-item">
+      <span class="svc-icon">🖼️</span>
+      <h3 class="svc-title">Portrait<br><em>Sessions</em></h3>
+      <p class="svc-desc">For anyone who wants great photos of themselves, no occasion required. Headshots, creative portraits, and personal shoots that reflect who you actually are.</p>
+      <div class="svc-tags">
+        <span class="tag">Headshots</span>
+        <span class="tag">Creative Portraits</span>
+        <span class="tag">Indoor & Outdoor</span>
+      </div>
+    </div>
+    <div class="svc-item">
+      <span class="svc-icon">🎂</span>
+      <h3 class="svc-title">Birthdays &<br><em>Celebrations</em></h3>
+      <p class="svc-desc">Birthday shoots, anniversary sessions, and life milestone photography. Relaxed, fun, and focused on the energy of the day, not a rigid pose list.</p>
+      <div class="svc-tags">
+        <span class="tag">Birthdays</span>
+        <span class="tag">Anniversaries</span>
+        <span class="tag">Candid & Posed</span>
+      </div>
+    </div>
+    <div class="svc-item">
+      <span class="svc-icon">✨</span>
+      <h3 class="svc-title">Prom &<br><em>Formal Events</em></h3>
+      <p class="svc-desc">Professional prom photography at your chosen location. Solo, couples, and group shots, with editing that matches the occasion.</p>
+      <div class="svc-tags">
+        <span class="tag">Solo</span>
+        <span class="tag">Couples</span>
+        <span class="tag">Groups</span>
+        <span class="tag">Location Flexible</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-header">
+    <h2 class="gallery-title">Recent<br><em>Work</em></h2>
+    <a href="https://tpmarkermedia.com/marker-media-photography-gallery/" class="view-all-link">Full Gallery →</a>
+  </div>
+  <div class="mosaic">
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/05/IMG_8757-scaled.webp" alt="Graduation shoot">
+      <div class="mosaic-label">Graduation · Smoke Bombs</div>
+    </div>
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/05/IMG_8819-scaled.webp" alt="Portrait">
+      <div class="mosaic-label">Portrait Session</div>
+    </div>
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/10/IMG_9314-scaled.jpg" alt="Prom">
+      <div class="mosaic-label">Prom Photography</div>
+    </div>
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/05/IMG_8621-scaled.webp" alt="Graduation">
+      <div class="mosaic-label">Graduation Portraits</div>
+    </div>
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/06/IMG_9169-scaled.webp" alt="Birthday">
+      <div class="mosaic-label">Birthday Shoot</div>
+    </div>
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/05/IMG_6855-scaled.webp" alt="Headshot">
+      <div class="mosaic-label">Portrait Session</div>
+    </div>
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/10/IMG_9240-scaled.jpg" alt="Prom outdoor">
+      <div class="mosaic-label">Prom · Outdoor</div>
+    </div>
+    <div class="mosaic-item">
+      <img class="mosaic-img" src="https://tpmarkermedia.com/wp-content/uploads/2025/09/IMG_8747-scaled.webp" alt="Graduation">
+      <div class="mosaic-label">Graduation</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="test-label">What Clients Say</div>
+  <div class="test-grid">
+    <div class="test-card">
+      <div class="test-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="test-text">"I had a great experience during my photoshoot. The session was comfortable, well-organised, and enjoyable from start to finish. The photos came on time, and the final images turned out beautifully."</p>
+      <div class="test-name">France Magana</div>
+      <div class="test-context">Portrait Session</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="test-text">"Amazing experience with Koke. Absolutely loved how he is able to direct the poses and how patient the team is throughout. Quality at its best!"</p>
+      <div class="test-name">Avuyile Matroos</div>
+      <div class="test-context">Graduation Shoot</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="test-text">"I'm absolutely in love with my pictures. They're beautiful, timeless, and truly reflect the joy of that special day. Highly recommend!"</p>
+      <div class="test-name">Yomeleza Nogaga</div>
+      <div class="test-context">Graduation Shoot</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section">
+  <div class="section-label">Sessions & Pricing</div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <span class="price-tag">Starter</span>
+      <h3 class="price-name">Mini Session</h3>
+      <p class="price-desc">Perfect for headshots, quick portraits, or a first shoot.</p>
+      <ul class="price-includes">
+        <li>1-hour shoot</li>
+        <li>1 location</li>
+        <li>15 edited images</li>
+        <li>Online gallery delivery</li>
+      </ul>
+      <a href="https://tpmarkermedia.com/booking/" class="book-btn book-btn-outline">Book Now</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="featured-badge">Most Popular</div>
+      <span class="price-tag">Standard</span>
+      <h3 class="price-name">Full Session</h3>
+      <p class="price-desc">The go-to for graduation shoots, birthday sessions, and creative portraits.</p>
+      <ul class="price-includes">
+        <li>2-3 hour shoot</li>
+        <li>Multiple locations</li>
+        <li>40+ edited images</li>
+        <li>Outfit changes welcome</li>
+        <li>Online gallery delivery</li>
+      </ul>
+      <a href="https://tpmarkermedia.com/booking/" class="book-btn book-btn-filled">Book Now</a>
+    </div>
+    <div class="pricing-card">
+      <span class="price-tag">Extended</span>
+      <h3 class="price-name">Full Day</h3>
+      <p class="price-desc">For groups, events, or anyone who wants an extended creative session.</p>
+      <ul class="price-includes">
+        <li>4-6 hour shoot</li>
+        <li>Multiple locations</li>
+        <li>75+ edited images</li>
+        <li>Groups up to 10</li>
+        <li>Priority editing</li>
+        <li>Online gallery delivery</li>
+      </ul>
+      <a href="https://tpmarkermedia.com/booking/" class="book-btn book-btn-outline">Book Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-eyebrow">Ready when you are</div>
+  <h2 class="cta-title">Let's capture<br><em>your moment.</em></h2>
+  <p class="cta-sub">Booking takes less than 5 minutes. Pick your session, choose a date, and we'll handle the rest.</p>
+  <div class="cta-btns">
+    <a href="https://tpmarkermedia.com/booking/" class="btn-fill">Book Your Shoot</a>
+    <a href="mailto:info@tpmarkermedia.com" class="btn-outline">Ask a Question</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Marker Media</div>
+  <div class="footer-info">
+    Brackenfell, Cape Town &nbsp;·&nbsp; +27 82 085 3407<br>
+    info@tpmarkermedia.com
+  </div>
+</footer>
+
+<script>
+  const cur = document.getElementById('cursor');
+  const rng = document.getElementById('ring');
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top = e.clientY + 'px';
+    setTimeout(() => { rng.style.left = e.clientX + 'px'; rng.style.top = e.clientY + 'px'; }, 60);
+  });
+  document.querySelectorAll('a, .svc-item, .mosaic-item, .pricing-card, .client-name').forEach(el => {
+    el.addEventListener('mouseenter', () => { cur.style.width = '18px'; cur.style.height = '18px'; });
+    el.addEventListener('mouseleave', () => { cur.style.width = '8px'; cur.style.height = '8px'; });
+  });
+</script>
+</body>
+</html>
