@@ -15,10 +15,10 @@
   .cursor-ring { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(201,168,76,0.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.12s ease; }
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: clamp(20px, 4vw, 28px) clamp(20px, 5vw, 56px); background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%); }
   @media (max-width: 480px) { nav { padding: 16px; } }
-  .nav-back { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,240,235,0.4); text-decoration: none; cursor: none; transition: color 0.3s; }
+  .nav-back { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,240,235,0.4); text-decoration: none; cursor: none; transition: color 0.3s; padding: 8px 12px; min-height: 44px; display: inline-flex; align-items: center; }
   .nav-back:hover { color: var(--gold); }
   .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; letter-spacing: 0.4em; text-transform: uppercase; color: var(--white); text-decoration: none; cursor: none; }
-  .nav-cta { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-decoration: none; padding: 12px 24px; border: 1px solid rgba(201,168,76,0.3); cursor: none; transition: background 0.3s, color 0.3s; }
+  .nav-cta { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); text-decoration: none; padding: 12px 24px; border: 1px solid rgba(201,168,76,0.3); cursor: none; transition: background 0.3s, color 0.3s; min-height: 44px; display: inline-flex; align-items: center; }
   .nav-cta:hover { background: var(--gold); color: var(--dark); }
   .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
   @media (max-width: 768px) { .hero { grid-template-columns: 1fr; min-height: 120vh; } }
@@ -35,9 +35,9 @@
   .hero-title em { font-style: italic; color: var(--gold); display: block; }
   .hero-desc { font-size: 0.85rem; line-height: 1.9; color: rgba(245,240,235,0.55); max-width: 380px; margin-bottom: 52px; opacity: 0; animation: slideUp 0.8s ease 0.7s forwards; }
   .hero-btns { display: flex; gap: 16px; opacity: 0; animation: slideUp 0.8s ease 0.9s forwards; }
-  .btn-primary { display: inline-block; padding: 16px 36px; background: var(--gold); color: var(--dark); font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; cursor: none; transition: opacity 0.3s; }
+  .btn-primary { display: inline-block; padding: 16px 36px; background: var(--gold); color: var(--dark); font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; cursor: none; transition: opacity 0.3s; min-height: 44px; display: inline-flex; align-items: center; }
   .btn-primary:hover { opacity: 0.85; }
-  .btn-secondary { display: inline-block; padding: 16px 36px; border: 1px solid var(--border); color: rgba(245,240,235,0.7); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; cursor: none; transition: border-color 0.3s, color 0.3s; }
+  .btn-secondary { display: inline-block; padding: 16px 36px; border: 1px solid var(--border); color: rgba(245,240,235,0.7); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; cursor: none; transition: border-color 0.3s, color 0.3s; min-height: 44px; display: inline-flex; align-items: center; }
   .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
   .marquee-wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; padding: 18px 0; background: var(--mid); }
   .marquee-track { display: flex; gap: 48px; animation: marquee 22s linear infinite; white-space: nowrap; }
@@ -107,13 +107,18 @@
   .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 300; color: var(--dark); line-height: 1.05; }
   .cta-title em { font-style: italic; }
   .cta-sub { font-size: 0.75rem; color: rgba(10,10,10,0.6); margin-top: 16px; letter-spacing: 0.1em; }
-  .btn-dark { display: inline-block; padding: 20px 48px; background: var(--dark); color: var(--gold); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; cursor: none; white-space: nowrap; transition: opacity 0.3s; }
+  .btn-dark { display: inline-block; padding: 20px 48px; background: var(--dark); color: var(--gold); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; cursor: none; white-space: nowrap; transition: opacity 0.3s; min-height: 44px; display: inline-flex; align-items: center; }
   .btn-dark:hover { opacity: 0.85; }
   footer { padding: clamp(32px, 6vw, 56px); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
   @media (max-width: 768px) { footer { flex-direction: column; text-align: center; padding: clamp(24px, 5vw, 40px); } }
   .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(245,240,235,0.4); }
   .footer-info { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,240,235,0.2); text-align: right; line-height: 1.8; }
   @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  /* Performance & Touch Optimization */
+  a, button, .btn-primary, .btn-secondary, .btn-dark, .service-card, .work-item, [role="button"] { min-height: 44px; min-width: 44px; }
+  img { will-change: auto; contain: layout style paint; }
+  .work-item:hover .work-img, .hero:hover .hero-img { will-change: transform; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 </style>
 </head>
 <body>
